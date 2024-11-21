@@ -1,0 +1,22 @@
+.formationsList{
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  gap: 2rem
+}
+
+.formationsList > ul{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+.formationsList > ul > li{
+  width: 20%;
+  padding: 1.5rem;
+  list-style: none;
+  background-color: red;
+  border-radius: 1rem;
+}
