@@ -2,45 +2,64 @@ import React, { useState } from 'react';
 
 function CreateClassesPage({ formationId }: { formationId: string }) {
     const [formData, setFormData] = useState({
-        psw: '',
         type: '',
-        title: '',
-        duration: '',
-        description: '',
-        price: '',
+        date: Date.now(),
+        nbEleves: 0,
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({
             ...prevFormData,
-            [name]: value,
+            [name]: name === 'nbEleves' ? parseInt(value, 10) || 0 : value,
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+        setIsSubmitting(true);
+        setError(null);
+        setSuccessMessage(null);
+
+        // Ajouter le fuseau horaire pour générer un ISO 8601 complet
+        const dateISO = formData.date ? new Date(formData.date).toISOString() : null;
+
         const dataToSubmit = {
             ...formData,
-            formationId,
+            date: dateISO, // Remplace la date saisie par le format ISO 8601
+            formationId: Number(formationId), // Inclure formationId dans la requête
         };
 
-        console.log('Données soumises :', dataToSubmit);
+        try {
+            const response = await fetch('http://localhost:3001/sessions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSubmit),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Erreur lors de la création de la session.');
+            }
+
+            const result = await response.json();
+            setSuccessMessage('Session créée avec succès!');
+            console.log('Session créée :', result);
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
+
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="psw">Mot de passe Admin:</label>
-                <input
-                    type="password"
-                    id="psw"
-                    name="psw"
-                    value={formData.psw}
-                    onChange={handleChange}
-                />
-            </div>
             <div>
                 <label htmlFor="type">Type:</label>
                 <input
@@ -49,51 +68,38 @@ function CreateClassesPage({ formationId }: { formationId: string }) {
                     name="type"
                     value={formData.type}
                     onChange={handleChange}
+                    required
                 />
             </div>
             <div>
-                <label htmlFor="title">Titre:</label>
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                />
+                <div>
+                    <label htmlFor="date">Date:</label>
+                    <input
+                        type="datetime-local"
+                        id="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
             </div>
             <div>
-                <label htmlFor="duration">Durée:</label>
-                <input
-                    type="text"
-                    id="duration"
-                    name="duration"
-                    value={formData.duration}
-                    onChange={handleChange}
-                />
-            </div>
-            <div>
-                <label htmlFor="description">Description:</label>
-                <input
-                    type="text"
-                    id="description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                />
-            </div>
-            <div>
-                <label htmlFor="price">Prix:</label>
+                <label htmlFor="nbEleves">Nombre d'Élèves:</label>
                 <input
                     type="number"
-                    id="price"
-                    name="price"
-                    value={formData.price}
+                    id="nbEleves"
+                    name="nbEleves"
+                    value={formData.nbEleves}
                     onChange={handleChange}
+                    required
                 />
             </div>
-            <button type="submit" disabled={formData.psw !== '1234'}>
-                Soumettre
+            <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Envoi en cours...' : 'Créer la Session'}
             </button>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
         </form>
     );
 }
