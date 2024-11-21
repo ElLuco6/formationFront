@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-function CreateClassesPage({ formationId }: { formationId: string }) {
+function CreateClassesPage() {
     const [formData, setFormData] = useState({
         type: '',
         date: Date.now(),
@@ -9,6 +10,8 @@ function CreateClassesPage({ formationId }: { formationId: string }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+    const {formationId} = useParams();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

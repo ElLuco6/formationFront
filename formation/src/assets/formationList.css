@@ -1,0 +1,16 @@
+.formationsList{
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  gap: 2rem
+}
+
+.formationsList > div{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 2rem;
+  padding: 0;
+  width: 100%;
+} 

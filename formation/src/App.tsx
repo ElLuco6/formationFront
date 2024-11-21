@@ -3,47 +3,28 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 import CreateFormationPage from './pages/CreateFormationPage';
 import CreateClassesPage from './pages/CreateClassesPage';
+import ListFormationsPage from './pages/ListFormationsPage';
+import InscriptionPage from './pages/InscriptionPage';
 
 const App: React.FC = () => {
     const navigate = useNavigate();
-    
-    const fakeFormations = [
-        { id: 1, title: 'React pour les Débutants', description: 'Apprenez les bases de React.' },
-        { id: 2, title: 'TypeScript Avancé', description: 'Approfondissez vos connaissances de TypeScript.' },
-        { id: 3, title: 'Design UI/UX', description: 'Créer des interfaces attrayantes et ergonomiques.' },
-    ];
+
 
     return (
         <div className="App">
             {/* Navbar */}
             <div className="navbar">
-                <h1>Plateforme de Formation</h1>
+                <h1 onClick={() => navigate('/')}>Plateforme de Formation</h1>
                 <button onClick={() => navigate('/createformationpage')}>Créer une Formation</button>
-                <button onClick={() => navigate('/createclassespage')}>Créer une Classes</button>
+                {/* <button onClick={() => navigate('/createclassespage')}>Créer une Classe</button> */}
             </div>
 
             {/* Home Content */}
             <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <div>
-                            <h1>Bienvenue</h1>
-                            <p>Explorez nos formations disponibles ci-dessous :</p>
-                            {/* Fake Formations Section */}
-                            <div className="card-section">
-                                {fakeFormations.map((formation) => (
-                                    <div key={formation.id} className="card">
-                                        <h3>{formation.title}</h3>
-                                        <p>{formation.description}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    }
-                />
+                <Route path="/" element={<ListFormationsPage />} />
                 <Route path="/createformationpage" element={<CreateFormationPage />} />
-                <Route path="/createclassespage" element={<CreateClassesPage formationId={"1"} />} />
+                <Route path="/createclassespage/:formationId" element={<CreateClassesPage />} />
+                <Route path="/inscription/:formationId" element={<InscriptionPage />} />
             </Routes>
         </div>
     );
