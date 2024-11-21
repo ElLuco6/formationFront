@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-function CreateClassesPage({ formationId }: { formationId: string }) {
+function CreateClassesPage() {
     const [formData, setFormData] = useState({
         psw: '',
         type: '',
@@ -9,6 +10,8 @@ function CreateClassesPage({ formationId }: { formationId: string }) {
         description: '',
         price: '',
     });
+
+    const {formationId} = useParams();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

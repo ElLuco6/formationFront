@@ -5,12 +5,12 @@
   gap: 2rem
 }
 
-.formationsList > ul{
+.formationsList > div{
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 2rem;
-  padding: 0 1rem;
+  padding: 0;
   width: 100%;
 } 

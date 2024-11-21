@@ -8,6 +8,12 @@
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   background-color: #fff;
   font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.card > *:first-child {
+  width: 100%;
 }
 
 .card:hover {
