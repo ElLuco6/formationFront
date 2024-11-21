@@ -12,11 +12,5 @@
   justify-content: space-between;
   gap: 2rem;
   padding: 0 1rem;
-}
-.formationsList > ul > li{
-  width: 20%;
-  padding: 1.5rem;
-  list-style: none;
-  background-color: red;
-  border-radius: 1rem;
-}
+  width: 100%;
+} 
