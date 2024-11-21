@@ -2,11 +2,11 @@ import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 import CreateFormationPage from './pages/CreateFormationPage';
+import CreateClassesPage from './pages/CreateClassesPage';
 
 const App: React.FC = () => {
     const navigate = useNavigate();
-
-    // Formations fictives
+    
     const fakeFormations = [
         { id: 1, title: 'React pour les Débutants', description: 'Apprenez les bases de React.' },
         { id: 2, title: 'TypeScript Avancé', description: 'Approfondissez vos connaissances de TypeScript.' },
@@ -19,6 +19,7 @@ const App: React.FC = () => {
             <div className="navbar">
                 <h1>Plateforme de Formation</h1>
                 <button onClick={() => navigate('/createformationpage')}>Créer une Formation</button>
+                <button onClick={() => navigate('/createclassespage')}>Créer une Classes</button>
             </div>
 
             {/* Home Content */}
@@ -42,6 +43,7 @@ const App: React.FC = () => {
                     }
                 />
                 <Route path="/createformationpage" element={<CreateFormationPage />} />
+                <Route path="/createclassespage" element={<CreateClassesPage formationId={"1"} />} />
             </Routes>
         </div>
     );
