@@ -1,35 +1,52 @@
-/* Navbar styles */
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Navbar Styles */
 .navbar {
-  background-color: #4CAF50;
-  padding: 10px 20px;
+  background-color: #004080;
+  padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .navbar h1 {
-  font-size: 20px;
+  font-size: 24px;
   margin: 0;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .navbar button {
   background-color: #fff;
-  color: #4CAF50;
+  color: #004080;
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .navbar button:hover {
   background-color: #e7e7e7;
+  transform: scale(1.05);
 }
 
-/* Card section styles */
+/* Card Section Styles */
 .card-section {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -37,27 +54,48 @@
   padding: 20px;
 }
 
+/* Individual Card Styles */
 .card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-.card h3 {
+.card h2 {
   font-size: 18px;
-  margin: 10px 0;
-  color: #333;
+  margin: 0 0 10px;
+  font-weight: bold;
+  color: #004080;
 }
 
 .card p {
   font-size: 14px;
-  color: #666;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Button in Card */
+.card button {
+  margin-top: 15px;
+  background-color: #004080;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.card button:hover {
+  background-color: #003366;
+  transform: scale(1.05);
 }

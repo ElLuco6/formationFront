@@ -1,63 +1,83 @@
-/* Card.css */
 .card {
-  width: 300px;
+  width: 100%;
+  max-width: 320px;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  background-color: #fff;
-  font-family: Arial, sans-serif;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: #ffffff;
+  font-family: 'Arial', sans-serif;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-.card > *:first-child {
-  width: 100%;
+  flex-direction: column;
 }
 
 .card:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.card.no-image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .card-content {
-  padding: 16px;
+  padding: 20px;
+  text-align: center;
 }
 
 .card-title {
-  margin: 0 0 8px;
-  font-size: 1.5rem;
-  color: #333;
-  text-align: center;
+  margin: 0 0 10px;
+  font-size: 1.4rem;
+  color: #004080;
+  font-weight: bold;
 }
 
 .card-description {
-  margin: 0 0 16px;
-  font-size: 1rem;
+  margin: 0 0 20px;
+  font-size: 0.9rem;
   color: #666;
-  text-align: center;
 }
 
 .card-info {
   display: flex;
   justify-content: space-between;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #555;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f7f7f7;
+  border-top: 1px solid #eee;
 }
 
 .card-price {
+  font-size: 1rem;
+  font-weight: bold;
   color: #27ae60;
 }
 
 .card-duration {
+  font-size: 0.9rem;
   color: #2980b9;
+}
+
+.card-button {
+  background-color: #004080;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.card-button:hover {
+  background-color: #003060;
+  transform: scale(1.05);
+}
+
+.card-button:focus {
+  outline: 2px solid #004080;
+  outline-offset: 2px;
+}
+
+.card-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
