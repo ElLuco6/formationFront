@@ -1,6 +1,6 @@
 .card {
-  width: 100%;
-  max-width: 320px;
+  width: 100%; /* Laisse chaque carte s'adapter à sa colonne */
+  max-width: 320px; /* Fixe une largeur maximale */
   border: 1px solid #ddd;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
