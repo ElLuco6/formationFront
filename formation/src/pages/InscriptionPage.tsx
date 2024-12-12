@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import '../assets/InscriptionPage.css';
 
 interface FormData {
     name: string;
@@ -53,23 +54,30 @@ function InscriptionPage() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="name">Nom:</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Inscription en cours...' : 'S\'inscrire'}
-            </button>
-        </form>
+        <div className="inscription-container">
+            <h2 className="inscription-title">Inscription à la formation</h2>
+            <form onSubmit={handleSubmit} className="inscription-form">
+                <div className="form-group">
+                    <label htmlFor="name">Nom:</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                {error && <p className="error-message">{error}</p>}
+                <button 
+                    type="submit" 
+                    className="submit-button" 
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting ? 'Inscription en cours...' : 'S\'inscrire'}
+                </button>
+            </form>
+        </div>
     );
 }
 
