@@ -79,8 +79,10 @@ function CreateClassesPage() {
       formationId: Number(formationId), // Inclure formationId dans la requête
     };
 
+    dataToSubmit.nbEleves = dataToSubmit.eleves.length
+
     try {
-      const response = await fetch("http://localhost:3001/sessions", {
+      const response = await fetch(API_URL+"/sessions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,6 +105,8 @@ function CreateClassesPage() {
     } finally {
       setIsSubmitting(false);
     }
+
+    // navigate('/classes');
   };
 
   useEffect(() => {
@@ -129,14 +133,6 @@ function CreateClassesPage() {
       <form onSubmit={handleSubmit} className="form-card">
         <div className="form-control">
           <label htmlFor="type">Type:</label>
-          {/* <input
-                    type="text"
-                    id="type"
-                    name="type"
-                    value={formData.type}
-                    onChange={handleChange}
-                    required
-                /> */}
           <select
             id="type"
             name="type"

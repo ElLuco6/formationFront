@@ -27,6 +27,11 @@ const App: React.FC = () => {
             Créer une Formation
           </button>
         ) : null}
+        {userLocal?.isAdmin ? (
+          <button onClick={() => navigate("/classes")}>
+            Liste des Sessions
+          </button>
+        ) : null}
         <button onClick={() => navigate(!userLocal ? "/login" : "/disconnect")}>
           {!userLocal ? "Login" : "Disconnect"}
         </button>
@@ -37,6 +42,7 @@ const App: React.FC = () => {
       {/* Home Content */}
       <Routes>
         <Route path="/" element={<ListFormationsPage />} />
+        <Route path="/classes" element={<ListClassesPage />} />
         {userLocal?.isAdmin ? (
           <>
             <Route
