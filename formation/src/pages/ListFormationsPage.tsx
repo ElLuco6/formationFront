@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 
-const API_URL = "http://localhost:3001/formations"; // Remplacez par l'URL de votre API
+const API_URL = "http://10.31.34.188:3001/formations"; // Remplacez par l'URL de votre API
 
 interface DataItem {
   id: number;
