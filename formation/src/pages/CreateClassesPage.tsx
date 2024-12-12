@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../assets/CreateSessionPage.css";
+import confetti from 'canvas-confetti';
 
 const API_URL = "http://10.31.34.188:3001"; // Remplacez par l'URL de votre API
 
@@ -71,6 +72,15 @@ function CreateClassesPage() {
     return newTab;
   };
 
+  const triggerConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#3498db', '#2ecc71', '#e74c3c', '#f1c40f']
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -100,13 +110,19 @@ function CreateClassesPage() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          errorData.message || "Erreur lors de la création de la session."
+          errorData.message || "Erreur lors de la création de la classe."
         );
       }
 
       const result = await response.json();
-      setSuccessMessage("Session créée avec succès!");
-      console.log("Session créée :", result);
+      setSuccessMessage("Classe créée avec succès!");
+      triggerConfetti(); // Déclenche les confettis
+      
+      // Attendre 1.5 secondes avant de rediriger
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
+
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -183,7 +199,7 @@ function CreateClassesPage() {
           )}
         </div>
         <button type="submit" disabled={isSubmitting} className="submit-btn">
-          {isSubmitting ? "Envoi en cours..." : "Créer la Session"}
+          {isSubmitting ? "Envoi en cours..." : "Créer la classe"}
         </button>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}

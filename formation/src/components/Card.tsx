@@ -73,7 +73,7 @@ const Card: React.FC<CardProps> = ({
       {/* Conteneur pour l'explosion */}
       {userLocal?.isAdmin ? (
         <button onClick={() => navigate("/createclassespage/" + id)}>
-          Créer une Session
+          Créer une classe
         </button>
       ) : null}
       {!userLocal?.isAdmin ? (
