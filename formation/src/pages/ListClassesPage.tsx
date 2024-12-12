@@ -32,45 +32,24 @@ const ListClassesPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);  
     
-    useEffect(() => {
-        const fetchSessions = async () => {
-          try {
-            setLoading(true);
-            const response = await fetch(API_URL+"/sessions");
-            if (!response.ok) {
-              throw new Error(`Erreur API : ${response.statusText}`);
-            }
-            const result = await response.json();
-            console.log(result)
-            setSessions(result);
-          } catch (err: any) {
-            setError(err.message || "Une erreur s'est produite");
-          } finally {
-            setLoading(false);
-          }
-        };
-        const fetchFormations = async () => {
-          try {
-            setLoading(true);
-            const response = await fetch(API_URL+"/formations");
-            if (!response.ok) {
-              throw new Error(`Erreur API : ${response.statusText}`);
-            }
-            const result = await response.json();
-            setFormations(result);
-          } catch (err: any) {
-            setError(err.message || "Une erreur s'est produite");
-          } finally {
-            setLoading(false);
-          }
-        };
-  
-        fetchSessions();
-        fetchFormations();
-    }, []);
-
-    const deleteSession = async (id: number) => {
-      try { 
+    const fetchSessions = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(API_URL+"/sessions");
+        if (!response.ok) {
+          throw new Error(`Erreur API : ${response.statusText}`);
+        }
+        const result = await response.json();
+        setSessions(result);
+      } catch (err: any) {
+        setError(err.message || "Une erreur s'est produite");
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchFormations = async () => {
+      try {
+        setLoading(true);
         const response = await fetch(API_URL+"/formations");
         if (!response.ok) {
           throw new Error(`Erreur API : ${response.statusText}`);
@@ -83,6 +62,30 @@ const ListClassesPage: React.FC = () => {
         setLoading(false);
       }
     };
+    useEffect(() => {
+  
+        fetchSessions();
+        fetchFormations();
+    }, []);
+
+    const handlDeleteSession = async (e: any) => {
+      const id = e.target.dataset.id
+      try {
+          const response = await fetch('http://10.31.34.188:3001/sessions/'+id, {
+              method: 'DELETE'
+          });
+
+          if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.message || 'Erreur lors de la suppression de la session.');
+          }
+
+          const result = await response.json();
+          fetchSessions();
+      } catch (err: any) {
+          setError(err.message);
+      }
+    };
     
 
     return (
@@ -90,31 +93,31 @@ const ListClassesPage: React.FC = () => {
           <div className="sessionsList">
             <h1>Liste des sessions</h1>
             <div id="sessionList">
-              {sessions.map((session) => {
+              {sessions.map((session, i) => {
                 const formation = formations.find(formation => formation.id === session.formationId);
-                console.log(session)
                 return (
-                <div className="card no-image">
+                <div key={"session"+i} className="card no-image">
                     <div className="card-content">
-                    {formation &&
-                        <h3 className="card-title">{formation.title}</h3>
-                    }
-                    <p className="card-description">Nombre d'élèves : {session.nbEleves}</p>
-                    
-                    <p className="card-description">{session.type}</p>
-                    <div>
-                        <p>Liste des participants :</p>
-                        {session.eleves.length > 0 ? (
-                            <ul className='usersSessionList'>                                        
-                                {session.eleves.map(user => (
-                                    <li>{user}</li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>Aucun participant inscrit</p>
-                        )}
+                      {formation &&
+                          <h3 className="card-title">{formation.title}</h3>
+                      }
+                      <p className="card-description">Nombre d'élèves : {session.nbEleves}</p>
+                      
+                      <p className="card-description">{session.type}</p>
+                      <div>
+                          <p>Liste des participants :</p>
+                          {session.eleves.length > 0 ? (
+                              <ul className='usersSessionList'>                                        
+                                  {session.eleves.map((user, j) => (
+                                      <li key={"eleve"+j}>{user}</li>
+                                  ))}
+                              </ul>
+                          ) : (
+                              <p>Aucun participant inscrit</p>
+                          )}
+                      </div>
                     </div>
-                    </div>
+                    <button className='deleteBtn' data-id={session.id} onClick={handlDeleteSession}>Supprimer</button>
                 </div>
                 )})}
             </div>
