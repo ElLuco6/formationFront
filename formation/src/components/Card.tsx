@@ -1,33 +1,64 @@
-import React from "react";
-import "../assets/Card.css";
-import "../assets/formationList.css";
-import { useNavigate } from "react-router-dom";
-interface CardProps {
-  title: string;
-  description: string;
-  price: number;
-  duration: number; // En heures
-  id: number; 
+import React from 'react';
+
+interface User {
+    id: number;
+    name: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, description, price, duration, id }) => {
-  
-  const navigate = useNavigate();
+interface CardProps {
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    duration: number;
+    users: User[];
+    onRegister: () => void;
+    onDelete: () => void;
+    isRegistered: boolean;
+}
 
-  return (
-    <div className="card no-image">
-      <div className="card-content">
-        <h3 className="card-title">{title}</h3>
-        <p className="card-description">{description}</p>
-        <div className="card-info">
-          <span className="card-price">{price} €</span>
-          <span className="card-duration">{duration} heures</span>
+const Card: React.FC<CardProps> = ({
+                                       id,
+                                       title,
+                                       description,
+                                       price,
+                                       duration,
+                                       users,
+                                       onRegister,
+                                       onDelete,
+                                       isRegistered,
+                                   }) => {
+    return (
+        <div className="card">
+            <h2>{title}</h2>
+            <p><strong>Prix :</strong> {price} €</p>
+            <p><strong>Durée :</strong> {duration} heures</p>
+            <h3>Utilisateurs inscrits :</h3>
+            {users.length > 0 ? (
+                <ul>
+                    {users.map((user) => (
+                        <li key={user.id}>{user.name}</li>
+                    ))}
+                </ul>
+            ) : (
+                <p>Aucun utilisateur inscrit.</p>
+            )}
+            <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
+                <button
+                    onClick={onRegister}
+                    className={isRegistered ? 'desinscrire' : 'inscrire'}
+                >
+                    {isRegistered ? 'Se désinscrire' : "S'inscrire"}
+                </button>
+                <button
+                    onClick={onDelete}
+                    style={{ background: '#dc3545', color: 'white' }}
+                >
+                    Supprimer
+                </button>
+            </div>
         </div>
-      </div>
-      <button onClick={() => navigate('/createclassespage/' + id)}>Créer une Session</button>
-      <button onClick={() => navigate('/inscription/' + id)}>S'inscrire</button>
-    </div>
-  );
+    );
 };
 
 export default Card;

@@ -1,56 +1,55 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+interface User {
+    id: number;
+    name: string;
+}
+
 interface CreateFormationPageProps {
     onAddFormation: (formation: {
         id: number;
         title: string;
         type: string;
-        duration: number; // Aligné avec Formation
+        duration: number;
         description: string;
         price: number;
+        users: User[]; // Tableau contenant des objets User
     }) => void;
 }
+
 
 const CreateFormationPage: React.FC<CreateFormationPageProps> = ({ onAddFormation }) => {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [type, setType] = useState('Technique');
-    const [durationValue, setDurationValue] = useState<number | ''>(''); // Toujours un nombre
-    const [durationUnit, setDurationUnit] = useState('heures');
+    const [duration, setDuration] = useState<number | ''>('');
     const [description, setDescription] = useState('');
-    const [price, setPrice] = useState<number | ''>(''); // Toujours un nombre
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [price, setPrice] = useState<number | ''>('');
+    const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        setIsSubmitting(true);
-        setError(null);
-
-        const durationValueAsNumber = parseInt(durationValue as string, 10); // Convertir en number
-
+        if (password !== '1234') {
+            setError('Mot de passe incorrect.');
+            return;
+        }
         const newFormation = {
-            id: Math.random(), // ID unique fictif
+            id: Math.random(),
             title,
             type,
-            duration: durationValueAsNumber, // Passer un nombre
+            duration: Number(duration),
             description,
-            price: price || 0,
+            price: Number(price),
+            users: [],
         };
-
-        try {
-            onAddFormation(newFormation); // Passe la formation
-            navigate('/'); // Retour à la liste
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setIsSubmitting(false);
-        }
+        onAddFormation(newFormation);
+        navigate('/');
     };
 
     return (
-        <div className="container">
+        <div className="form-container">
             <h1>Créer une Nouvelle Formation</h1>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -65,46 +64,58 @@ const CreateFormationPage: React.FC<CreateFormationPageProps> = ({ onAddFormatio
                 </div>
                 <div>
                     <label htmlFor="type">Type de Formation</label>
-                    <select id="type" value={type} onChange={(e) => setType(e.target.value)} required>
+                    <select
+                        id="type"
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                        required
+                    >
                         <option value="Technique">Technique</option>
                         <option value="Soft Skills">Soft Skills</option>
                         <option value="Management">Management</option>
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="duration">Durée</label>
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                        <input
-                            type="number"
-                            id="durationValue"
-                            value={durationValue}
-                            onChange={(e) => setDurationValue(Number(e.target.value) || '')}
-                            required
-                        />
-                        <select
-                            id="durationUnit"
-                            value={durationUnit}
-                            onChange={(e) => setDurationUnit(e.target.value)}
-                            required
-                        >
-                            <option value="minutes">Minutes</option>
-                            <option value="heures">Heures</option>
-                        </select>
-                    </div>
+                    <label htmlFor="duration">Durée (heures)</label>
+                    <input
+                        type="number"
+                        id="duration"
+                        value={duration}
+                        onChange={(e) => setDuration(Number(e.target.value))}
+                        required
+                    />
                 </div>
                 <div>
-                    <label htmlFor="price">Prix</label>
+                    <label htmlFor="price">Prix (€)</label>
                     <input
                         type="number"
                         id="price"
                         value={price}
-                        onChange={(e) => setPrice(Number(e.target.value) || '')}
+                        onChange={(e) => setPrice(Number(e.target.value))}
                         required
                     />
                 </div>
-                <button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? 'Enregistrement...' : 'Enregistrer'}
-                </button>
+                <div>
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                        id="description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                    ></textarea>
+                </div>
+                <div className="password-container">
+                    <label htmlFor="password">Mot de passe</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <button type="submit">Enregistrer</button>
             </form>
         </div>
     );
