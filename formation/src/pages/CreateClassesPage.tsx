@@ -98,8 +98,10 @@ function CreateClassesPage() {
       formationId: Number(formationId), // Inclure formationId dans la requête
     };
 
+    dataToSubmit.nbEleves = dataToSubmit.eleves.length
+
     try {
-      const response = await fetch("http://10.31.34.188:3001/sessions", {
+      const response = await fetch(API_URL+"/sessions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,6 +130,8 @@ function CreateClassesPage() {
     } finally {
       setIsSubmitting(false);
     }
+
+    // navigate('/classes');
   };
 
   useEffect(() => {
