@@ -68,6 +68,21 @@ const ListClassesPage: React.FC = () => {
         fetchSessions();
         fetchFormations();
     }, []);
+
+    const deleteSession = async (id: number) => {
+      try { 
+        const response = await fetch(API_URL+"/formations");
+        if (!response.ok) {
+          throw new Error(`Erreur API : ${response.statusText}`);
+        }
+        const result = await response.json();
+        setFormations(result);
+      } catch (err: any) {
+        setError(err.message || "Une erreur s'est produite");
+      } finally {
+        setLoading(false);
+      }
+    };
     
 
     return (

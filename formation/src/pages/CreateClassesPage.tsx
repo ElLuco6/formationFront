@@ -1,16 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+const API_URL = "http://10.31.34.188:3001"; // Remplacez par l'URL de votre API
+
+interface DataFormation {
+    id: number;
+    createdAt: Date;
+    description: string;
+    duration: string;
+    price: string;
+    registeredNames: string[];
+    title: string;
+    type: string;
+}
 
 function CreateClassesPage() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        type: '',
-        date: Date.now(),
+        type: 'Présentiel',
+        date: "",
         nbEleves: 0,
+        eleves: [],
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [formation, setFormation] = useState<DataFormation | null>(null);
 
     const {formationId} = useParams();
 
@@ -18,9 +33,32 @@ function CreateClassesPage() {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({
             ...prevFormData,
-            [name]: name === 'nbEleves' ? parseInt(value, 10) || 0 : value,
+            [name]: handleFormData(prevFormData, name, value)
         }));
     };
+
+    const handleFormData = (data: any, name: string, value: string) => {
+        switch (name) {
+            case 'nbEleves':
+                return parseInt(value, 10) || 0
+                
+            case 'eleves':
+                return invertUser(data.eleves, value)
+        
+            default:
+                return value;
+        }
+    }
+
+    const invertUser = (tab: string[], user: string) => {
+        const index = tab.indexOf(user);
+        if(index === -1){
+            tab.push(user);
+        }else{
+            tab.splice(index, 1);
+        }
+        return tab;
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,6 +74,7 @@ function CreateClassesPage() {
             date: dateISO, // Remplace la date saisie par le format ISO 8601
             formationId: Number(formationId), // Inclure formationId dans la requête
         };
+        dataToSubmit.nbEleves = dataToSubmit.eleves.length
 
         try {
             const response = await fetch('http://10.31.34.188:3001/sessions', {
@@ -53,7 +92,7 @@ function CreateClassesPage() {
 
             const result = await response.json();
             setSuccessMessage('Session créée avec succès!');
-            console.log('Session créée :', result);
+            console.log('Session créée :', result);  
             navigate('/classes')
         } catch (err: any) {
             setError(err.message);
@@ -62,19 +101,47 @@ function CreateClassesPage() {
         }
     };
 
+    useEffect(() => {
+        const fetchFormation = async () => {
+          try {
+            setLoading(true);
+            const response = await fetch(API_URL+"/formations/"+formationId);
+            if (!response.ok) {
+              throw new Error(`Erreur API : ${response.statusText}`);
+            }
+            const result = await response.json();
+            setFormation(result);
+          } catch (err: any) {
+            setError(err.message || "Une erreur s'est produite");
+          } finally {
+            setLoading(false);
+          }
+        };
+  ;
+        fetchFormation();
+    }, []);
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="type">Type:</label>
-                <input
+                {/* <input
                     type="text"
                     id="type"
                     name="type"
                     value={formData.type}
                     onChange={handleChange}
                     required
-                />
+                /> */}
+                <select
+                    id="type"
+                    name="type"
+                    // onChange={handleChange}
+                    required>
+                        <option value="Présentiel">Présentiel</option>
+                        <option value="Conférence">Conférence</option>
+                        <option value="Distanciel">Distanciel</option>
+                    </select>
             </div>
             <div>
                 <div>
@@ -90,20 +157,25 @@ function CreateClassesPage() {
                 </div>
             </div>
             <div>
-                <label htmlFor="nbEleves">Nombre d'Élèves:</label>
-                <input
-                    type="number"
-                    id="nbEleves"
-                    name="nbEleves"
-                    value={formData.nbEleves}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            {/* <div>
                 <label htmlFor="eleves">Élèves:</label>
-                <input type="text" />
-            </div> */}
+                {formation && formation.registeredNames.length > 0 ? (
+                    <div className='usersSessionList'>                                        
+                        {formation.registeredNames.map((user, i) => (
+                            <div key={i}>
+                                <input 
+                                    onChange={handleChange}
+                                    id={"check"+i} 
+                                    name="eleves" 
+                                    type="checkbox" 
+                                    value={user}/>
+                                <label htmlFor={"check"+i}>{user}</label>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p>Aucun participant inscrit</p>
+                )}
+            </div>
             <button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? 'Envoi en cours...' : 'Créer la Session'}
             </button>
