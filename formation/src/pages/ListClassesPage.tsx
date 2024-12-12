@@ -2,42 +2,71 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 
-const API_URL = "http://10.31.34.188:3001/sessions"; // Remplacez par l'URL de votre API
+const API_URL = "http://10.31.34.188:3001"; // Remplacez par l'URL de votre API
 
 interface DataSession {
-  id: number;
-  type: string;
-  date: Date;
-  formationId: number;
-  nbEleves: number; // En heures
+    id: number;
+    type: string;
+    date: Date;
+    formationId: number;
+    eleves: string[];
+    nbEleves: number;
+}
+interface DataFormation {
+    id: number;
+    createdAt: Date;
+    description: string;
+    duration: string;
+    price: string;
+    registeredNames: string[];
+    title: string;
+    type: string;
 }
 
 const ListClassesPage: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const [data, setData] = useState<DataSession[]>([]);
+    const [sessions, setSessions] = useState<DataSession[]>([]);
+    const [formations, setFormations] = useState<DataFormation[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);  
     
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          setLoading(true);
-          const response = await fetch(API_URL);
-          if (!response.ok) {
-            throw new Error(`Erreur API : ${response.statusText}`);
+        const fetchSessions = async () => {
+          try {
+            setLoading(true);
+            const response = await fetch(API_URL+"/sessions");
+            if (!response.ok) {
+              throw new Error(`Erreur API : ${response.statusText}`);
+            }
+            const result = await response.json();
+            console.log(result)
+            setSessions(result);
+          } catch (err: any) {
+            setError(err.message || "Une erreur s'est produite");
+          } finally {
+            setLoading(false);
           }
-          const result = await response.json();
-          setData(result);
-        } catch (err: any) {
-          setError(err.message || "Une erreur s'est produite");
-        } finally {
-          setLoading(false);
-        }
-      };
+        };
+        const fetchFormations = async () => {
+          try {
+            setLoading(true);
+            const response = await fetch(API_URL+"/formations");
+            if (!response.ok) {
+              throw new Error(`Erreur API : ${response.statusText}`);
+            }
+            const result = await response.json();
+            setFormations(result);
+          } catch (err: any) {
+            setError(err.message || "Une erreur s'est produite");
+          } finally {
+            setLoading(false);
+          }
+        };
   
-      fetchData();
+        fetchSessions();
+        fetchFormations();
     }, []);
     
 
@@ -46,14 +75,34 @@ const ListClassesPage: React.FC = () => {
           <div className="sessionsList">
             <h1>Liste des sessions</h1>
             <div id="sessionList">
-              {data.map((item) => (
+              {sessions.map((session) => {
+                const formation = formations.find(formation => formation.id === session.formationId);
+                console.log(session)
+                return (
                 <div className="card no-image">
                     <div className="card-content">
-                    <h3 className="card-title">{item.type}</h3>
-                    <p className="card-description">Nombre d'élèves : {item.nbEleves}</p>
+                    <h3 className="card-title">{session.type}</h3>
+                    <p className="card-description">Nombre d'élèves : {session.nbEleves}</p>
+                    
+                    {formation &&
+                        <p className="card-description">Formation : {formation.title}</p>
+                    }
+                    
+                    <div>
+                        <p>Liste des participants :</p>
+                        {session.eleves.length > 0 ? (
+                            <ul className='usersSessionList'>                                        
+                                {session.eleves.map(user => (
+                                    <li>{user}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>Aucun participant inscrit</p>
+                        )}
+                    </div>
                     </div>
                 </div>
-                ))}
+                )})}
             </div>
           </div>
         </div>
