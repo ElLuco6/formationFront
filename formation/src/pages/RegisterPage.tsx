@@ -49,7 +49,7 @@ const RegisterPage: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="title">Register</h1>
+      <h1 className="title">S'inscrire</h1>
       <form onSubmit={handleSubmit} className="form">
         <div className="inputGroup">
           <label htmlFor="nom" className="label">
@@ -66,7 +66,7 @@ const RegisterPage: React.FC = () => {
         </div>
         <div className="inputGroup">
           <label htmlFor="password" className="label">
-            Password:
+            Mot de passe:
           </label>
           <input
             type="password"
@@ -102,7 +102,7 @@ const RegisterPage: React.FC = () => {
 
         {error && <div className="error">{error}</div>}
         <button type="submit" disabled={isSubmitting} className="button">
-          {isSubmitting ? "Registering..." : "Register"}
+          {isSubmitting ? "Inscription..." : "S'inscrire"}
         </button>
         <button
           type="button"
