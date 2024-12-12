@@ -13,7 +13,7 @@ function InscriptionPage() {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    
+
     const navigate = useNavigate();
     const {formationId} = useParams();
 
@@ -67,6 +67,7 @@ function InscriptionPage() {
     };
 
     return (
+
         <div className="inscription-container">
             <h2 className="inscription-title">Inscription à la formation</h2>
             <form onSubmit={handleSubmit} className="inscription-form">
@@ -82,9 +83,9 @@ function InscriptionPage() {
                     />
                 </div>
                 {error && <p className="error-message">{error}</p>}
-                <button 
-                    type="submit" 
-                    className="submit-button" 
+                <button
+                    type="submit"
+                    className="submit-button"
                     disabled={isSubmitting}
                 >
                     {isSubmitting ? 'Inscription en cours...' : 'S\'inscrire'}
