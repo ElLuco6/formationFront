@@ -1,10 +1,10 @@
 .formationsList {
-  display: flex;
+  display: grid;
   grid-template-columns: repeat(
-    auto-fit,
-    minmax(250px, 1fr)
+    4,
+    1fr
   ); /* S'adapte automatiquement à la taille de l'écran */
-  gap: 20px; /* Espace entre les cartes */
+  gap: 1rem; /* Espace entre les cartes */
   padding: 20px; /* Espacement avec les bords */
   justify-items: center; /* Centre les cartes dans leurs colonnes */
   align-items: start; /* Assure un alignement vertical correct */
@@ -13,6 +13,24 @@
 @media (max-width: 480px) {
   .formationsList {
     grid-template-columns: 1fr; /* Une seule colonne pour les petits écrans */
+  }
+}
+
+@media (max-width: 768px) {
+  .formationsList {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Une seule colonne pour les petits écrans */
+  }
+}
+
+@media (max-width: 1200px) {
+  .formationsList {
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ); /* Une seule colonne pour les petits écrans */
   }
 }
 
