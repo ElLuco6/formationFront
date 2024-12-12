@@ -32,7 +32,7 @@ const CreateFormationPage: React.FC = () => {
         const formationData = { title, type, duration, description, price };
 
         try {
-            const response = await fetch('http://localhost:3001/formations', {
+            const response = await fetch('http://10.31.34.188:3001/formations', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formationData),
