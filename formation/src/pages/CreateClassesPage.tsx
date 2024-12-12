@@ -31,35 +31,44 @@ function CreateClassesPage() {
 
   const { formationId } = useParams();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: handleFormData(prevFormData, name, value),
-    }));
+    setFormData(prevFormData => {
+      const newFormData = {
+        ...prevFormData,
+        [name]: handleFormData(prevFormData, name, value),
+      };
+
+      // Mise à jour automatique de nbEleves quand les élèves changent
+      if (name === 'eleves') {
+        const newEleves = handleFormData(prevFormData, 'eleves', value) as string[];
+        newFormData.nbEleves = newEleves.length;
+      }
+
+      return newFormData;
+    });
   };
 
   const handleFormData = (data: any, name: string, value: string) => {
     switch (name) {
-      case "nbEleves":
-        return parseInt(value, 10) || 0;
-
+      case "type":
+        return value;
       case "eleves":
-        return invertUser(data.eleves, value);
-
+        return invertUser(data.eleves || [], value);
       default:
         return value;
     }
   };
 
   const invertUser = (tab: string[], user: string) => {
-    const index = tab.indexOf(user);
+    const newTab = [...tab];
+    const index = newTab.indexOf(user);
     if (index === -1) {
-      tab.push(user);
+      newTab.push(user);
     } else {
-      tab.splice(index, 1);
+      newTab.splice(index, 1);
     }
-    return tab;
+    return newTab;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -129,18 +138,11 @@ function CreateClassesPage() {
       <form onSubmit={handleSubmit} className="form-card">
         <div className="form-control">
           <label htmlFor="type">Type:</label>
-          {/* <input
-                    type="text"
-                    id="type"
-                    name="type"
-                    value={formData.type}
-                    onChange={handleChange}
-                    required
-                /> */}
           <select
             id="type"
             name="type"
-            // onChange={handleChange}
+            onChange={handleChange}
+            value={formData.type}
             required
           >
             <option value="Présentiel">Présentiel</option>
