@@ -55,7 +55,7 @@ const LoginPage: React.FC = () => {
       {!userLocal ? (
         <>
           <div className="container">
-            <h1 className="title">Login</h1>
+            <h1 className="title">Connexion</h1>
             <form onSubmit={handleSubmit} className="form">
               <div className="inputGroup">
                 <label htmlFor="name" className="label">
@@ -72,7 +72,7 @@ const LoginPage: React.FC = () => {
               </div>
               <div className="inputGroup">
                 <label htmlFor="password" className="label">
-                  Password:
+                  Mot de passe:
                 </label>
                 <input
                   type="password"
@@ -85,7 +85,7 @@ const LoginPage: React.FC = () => {
               </div>
               {error && <div className="error">{error}</div>}
               <button type="submit" disabled={isSubmitting} className="button">
-                {isSubmitting ? "Logging in..." : "Login"}
+                {isSubmitting ? "Connexion ..." : "Connexion"}
               </button>
               <button
                 type="button"

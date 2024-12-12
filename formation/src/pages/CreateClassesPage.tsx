@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../assets/CreateSessionPage.css";
+import confetti from 'canvas-confetti';
 
 const API_URL = "http://10.31.34.188:3001"; // Remplacez par l'URL de votre API
 
@@ -31,35 +32,53 @@ function CreateClassesPage() {
 
   const { formationId } = useParams();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: handleFormData(prevFormData, name, value),
-    }));
+    setFormData(prevFormData => {
+      const newFormData = {
+        ...prevFormData,
+        [name]: handleFormData(prevFormData, name, value),
+      };
+
+      // Mise à jour automatique de nbEleves quand les élèves changent
+      if (name === 'eleves') {
+        const newEleves = handleFormData(prevFormData, 'eleves', value) as string[];
+        newFormData.nbEleves = newEleves.length;
+      }
+
+      return newFormData;
+    });
   };
 
   const handleFormData = (data: any, name: string, value: string) => {
     switch (name) {
-      case "nbEleves":
-        return parseInt(value, 10) || 0;
-
+      case "type":
+        return value;
       case "eleves":
-        return invertUser(data.eleves, value);
-
+        return invertUser(data.eleves || [], value);
       default:
         return value;
     }
   };
 
   const invertUser = (tab: string[], user: string) => {
-    const index = tab.indexOf(user);
+    const newTab = [...tab];
+    const index = newTab.indexOf(user);
     if (index === -1) {
-      tab.push(user);
+      newTab.push(user);
     } else {
-      tab.splice(index, 1);
+      newTab.splice(index, 1);
     }
-    return tab;
+    return newTab;
+  };
+
+  const triggerConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#3498db', '#2ecc71', '#e74c3c', '#f1c40f']
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -93,13 +112,19 @@ function CreateClassesPage() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          errorData.message || "Erreur lors de la création de la session."
+          errorData.message || "Erreur lors de la création de la classe."
         );
       }
 
       const result = await response.json();
-      setSuccessMessage("Session créée avec succès!");
-      console.log("Session créée :", result);
+      setSuccessMessage("Classe créée avec succès!");
+      triggerConfetti(); // Déclenche les confettis
+      
+      // Attendre 1.5 secondes avant de rediriger
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
+
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -136,7 +161,8 @@ function CreateClassesPage() {
           <select
             id="type"
             name="type"
-            // onChange={handleChange}
+            onChange={handleChange}
+            value={formData.type}
             required
           >
             <option value="Présentiel">Présentiel</option>
@@ -177,7 +203,7 @@ function CreateClassesPage() {
           )}
         </div>
         <button type="submit" disabled={isSubmitting} className="submit-btn">
-          {isSubmitting ? "Envoi en cours..." : "Créer la Session"}
+          {isSubmitting ? "Envoi en cours..." : "Créer la classe"}
         </button>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
