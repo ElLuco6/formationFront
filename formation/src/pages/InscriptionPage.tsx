@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../assets/InscriptionPage.css';
+import confetti from 'canvas-confetti';
 
 interface FormData {
     name: string;
@@ -24,6 +25,15 @@ function InscriptionPage() {
         }));
     };
 
+    const triggerConfetti = () => {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#3498db', '#2ecc71', '#e74c3c', '#f1c40f']
+        });
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -44,8 +54,11 @@ function InscriptionPage() {
                 throw new Error("Erreur lors de l'inscription");
             }
 
-            // Redirection vers la page d'accueil après succès
-            navigate('/');
+            triggerConfetti(); // Déclenche les confettis
+            setTimeout(() => {
+                navigate('/');
+            }, 1500); // Attend 1.5 secondes avant la redirection
+
         } catch (err: any) {
             setError(err.message);
         } finally {

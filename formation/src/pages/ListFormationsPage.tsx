@@ -18,8 +18,8 @@ const ListFormationsPage: React.FC = () => {
 
     const [data, setData] = useState<DataItem[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);  
-    
+    const [error, setError] = useState<string | null>(null);
+
     useEffect(() => {
       const fetchData = async () => {
         try {
@@ -36,10 +36,24 @@ const ListFormationsPage: React.FC = () => {
           setLoading(false);
         }
       };
-  
+
       fetchData();
     }, []);
-    
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(API_URL);
+            if (!response.ok) {
+                throw new Error(`Erreur API : ${response.statusText}`);
+            }
+            const result = await response.json();
+            setData(result);
+        } catch (err: any) {
+            setError(err.message || "Une erreur s'est produite");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="container">
@@ -54,6 +68,7 @@ const ListFormationsPage: React.FC = () => {
                   price={formation.price}
                   duration={formation.duration}
                   id={formation.id}
+                  fetchData={fetchData}
                 />
               ))}
             </div>

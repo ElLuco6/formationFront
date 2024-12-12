@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/CreateFormationPage.css';
+import confetti from 'canvas-confetti';
 
 const CreateFormationPage: React.FC = () => {
     const navigate = useNavigate();
@@ -12,6 +13,15 @@ const CreateFormationPage: React.FC = () => {
     const [price, setPrice] = useState<number | ''>('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const triggerConfetti = () => {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#004080', '#3498db', '#2ecc71', '#f1c40f']
+        });
+    };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -32,7 +42,11 @@ const CreateFormationPage: React.FC = () => {
                 throw new Error('Une erreur est survenue lors de la création de la formation.');
             }
 
-            navigate('/');
+            triggerConfetti(); // Déclenche les confettis
+            setTimeout(() => {
+                navigate('/');
+            }, 1500); // Attend 1.5 secondes avant la redirection
+
         } catch (error: any) {
             setError(error.message);
         } finally {
