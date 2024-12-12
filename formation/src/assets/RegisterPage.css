@@ -55,3 +55,12 @@
     color: #fff;
     cursor: pointer;
 }
+
+.login-button {
+    margin-top: 1rem;
+    background-color: #17a2b8;
+}
+
+.login-button:hover {
+    background-color: #138496;
+}
