@@ -71,10 +71,6 @@ const Card: React.FC<CardProps> = ({
       </div>
 
       {/* Conteneur pour l'explosion */}
-      <div
-        id="particles-explosion"
-        style={{ position: "relative", width: "100%", height: "200px" }}
-      ></div>
       {userLocal?.isAdmin ? (
         <button onClick={() => navigate("/createclassespage/" + id)}>
           Créer une Session
