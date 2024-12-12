@@ -81,3 +81,11 @@
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+@media (max-width: 480px) {
+  .card {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+}
+
