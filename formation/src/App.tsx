@@ -1,30 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 import CreateFormationPage from './pages/CreateFormationPage';
-import CreateClassesPage from './pages/CreateClassesPage';
 import ListFormationsPage from './pages/ListFormationsPage';
-import InscriptionPage from './pages/InscriptionPage';
 
 const App: React.FC = () => {
     const navigate = useNavigate();
+    const [formations, setFormations] = useState([
+        {
+            id: 1,
+            title: 'Formation React',
+            description: 'Apprenez les bases de React.',
+            price: 100,
+            duration: 8,
+        },
+    ]);
 
+    const handleAddFormation = (newFormation: any) => {
+        setFormations((prevFormations) => [...prevFormations, newFormation]);
+    };
 
     return (
         <div className="App">
-            {/* Navbar */}
             <div className="navbar">
                 <h1 onClick={() => navigate('/')}>Plateforme de Formation</h1>
                 <button onClick={() => navigate('/createformationpage')}>Créer une Formation</button>
-                {/* <button onClick={() => navigate('/createclassespage')}>Créer une Classe</button> */}
             </div>
-
-            {/* Home Content */}
             <Routes>
-                <Route path="/" element={<ListFormationsPage />} />
-                <Route path="/createformationpage" element={<CreateFormationPage />} />
-                <Route path="/createclassespage/:formationId" element={<CreateClassesPage />} />
-                <Route path="/inscription/:formationId" element={<InscriptionPage />} />
+                <Route path="/" element={<ListFormationsPage mockedData={formations} />} />
+                <Route path="/createformationpage" element={<CreateFormationPage onAddFormation={handleAddFormation} />} />
             </Routes>
         </div>
     );

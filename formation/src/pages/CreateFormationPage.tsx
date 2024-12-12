@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const CreateFormationPage: React.FC = () => {
+interface CreateFormationPageProps {
+    onAddFormation: (formation: {
+        id: number;
+        title: string;
+        type: string;
+        duration: string;
+        description: string;
+        price: number;
+    }) => void;
+}
+
+const CreateFormationPage: React.FC<CreateFormationPageProps> = ({ onAddFormation }) => {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [type, setType] = useState('Technique');
@@ -12,28 +23,26 @@ const CreateFormationPage: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         setIsSubmitting(true);
         setError(null);
 
         const duration = `${durationValue} ${durationUnit}`;
-        const formationData = { title, type, duration, description, price };
+        const newFormation = {
+            id: Math.random(), // ID unique fictif
+            title,
+            type,
+            duration,
+            description,
+            price: price || 0,
+        };
 
         try {
-            const response = await fetch('http://localhost:3001/formations', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formationData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Une erreur est survenue lors de la création de la formation.');
-            }
-
-            navigate('/');
-        } catch (error: any) {
-            setError(error.message);
+            onAddFormation(newFormation); // Passe la nouvelle formation à la liste
+            navigate('/'); // Retourne à la liste
+        } catch (err: any) {
+            setError(err.message);
         } finally {
             setIsSubmitting(false);
         }
