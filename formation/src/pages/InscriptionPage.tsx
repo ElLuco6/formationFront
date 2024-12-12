@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+
+interface FormData {
+    name: string;
+}
 
 function InscriptionPage() {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         name: '',
     });
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    
+    const navigate = useNavigate();
     const {formationId} = useParams();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,31 +23,51 @@ function InscriptionPage() {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
-        const dataToSubmit = {
-            ...formData,
-            formationId,
-        };
+        setIsSubmitting(true);
+        setError(null);
 
-        console.log('Données soumises :', dataToSubmit);
+        try {
+            const response = await fetch(`http://10.31.34.188:3001/formations/${formationId}/registeredNames`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    registeredName: formData.name
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Erreur lors de l'inscription");
+            }
+
+            // Redirection vers la page d'accueil après succès
+            navigate('/');
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label htmlFor="type">Nom:</label>
+                <label htmlFor="name">Nom:</label>
                 <input
                     type="text"
-                    id="type"
-                    name="type"
+                    id="name"
+                    name="name"
                     value={formData.name}
                     onChange={handleChange}
+                    required
                 />
             </div>
-            <button type="submit">
-                Soumettre
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Inscription en cours...' : 'S\'inscrire'}
             </button>
         </form>
     );
