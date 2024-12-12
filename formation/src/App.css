@@ -11,6 +11,13 @@ a {
   color: inherit;
 }
 
+.title {
+  text-align: center; /* Centre le texte horizontalement */
+  margin-bottom: 20px; /* Ajoute un espace en bas pour plus de lisibilité */
+  font-size: 2rem; /* Taille de police (optionnelle, ajustez si nécessaire) */
+  color: #004080; /* Couleur du texte (optionnelle, en cohérence avec votre design) */
+}
+
 /* Navbar Styles */
 .navbar {
   background-color: #004080;
