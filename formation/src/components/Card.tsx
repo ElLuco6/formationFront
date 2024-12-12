@@ -69,7 +69,7 @@ const Card: React.FC<CardProps> = ({
           <p className="card-description">{description}</p>
           <div className="card-info">
             <span className="card-price">{price} €</span>
-            <span className="card-duration">{duration} heures</span>
+            <span className="card-duration">{duration}</span>
           </div>
         </div>
 
