@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import "../assets/CreateSessionPage.css";
+
 const API_URL = "http://10.31.34.188:3001"; // Remplacez par l'URL de votre API
 
 interface DataFormation {
@@ -123,10 +125,11 @@ function CreateClassesPage() {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-control">
-        <label htmlFor="type">Type:</label>
-        {/* <input
+    <div className="create-session-page">
+      <form onSubmit={handleSubmit} className="form-card">
+        <div className="form-control">
+          <label htmlFor="type">Type:</label>
+          {/* <input
                     type="text"
                     id="type"
                     name="type"
@@ -134,18 +137,17 @@ function CreateClassesPage() {
                     onChange={handleChange}
                     required
                 /> */}
-        <select
-          id="type"
-          name="type"
-          // onChange={handleChange}
-          required
-        >
-          <option value="Présentiel">Présentiel</option>
-          <option value="Conférence">Conférence</option>
-          <option value="Distanciel">Distanciel</option>
-        </select>
-      </div>
-      <div>
+          <select
+            id="type"
+            name="type"
+            // onChange={handleChange}
+            required
+          >
+            <option value="Présentiel">Présentiel</option>
+            <option value="Conférence">Conférence</option>
+            <option value="Distanciel">Distanciel</option>
+          </select>
+        </div>
         <div className="form-control">
           <label htmlFor="date">Date:</label>
           <input
@@ -157,34 +159,34 @@ function CreateClassesPage() {
             required
           />
         </div>
-      </div>
-      <div className="form-control">
-        <label htmlFor="eleves">Élèves:</label>
-        {formation && formation.registeredNames.length > 0 ? (
-          <div className="usersSessionList">
-            {formation.registeredNames.map((user, i) => (
-              <div key={i}>
-                <input
-                  onChange={handleChange}
-                  id={"check" + i}
-                  name="eleves"
-                  type="checkbox"
-                  value={user}
-                />
-                <label htmlFor={"check" + i}>{user}</label>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>Aucun participant inscrit</p>
-        )}
-      </div>
-      <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Envoi en cours..." : "Créer la Session"}
-      </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-    </form>
+        <div>
+          <label htmlFor="eleves">Élèves:</label>
+          {formation && formation.registeredNames.length > 0 ? (
+            <div className="usersSessionList">
+              {formation.registeredNames.map((user, i) => (
+                <div key={i}>
+                  <input
+                    onChange={handleChange}
+                    id={"check" + i}
+                    name="eleves"
+                    type="checkbox"
+                    value={user}
+                  />
+                  <label htmlFor={"check" + i}>{user}</label>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>Aucun participant inscrit</p>
+          )}
+        </div>
+        <button type="submit" disabled={isSubmitting} className="submit-btn">
+          {isSubmitting ? "Envoi en cours..." : "Créer la Session"}
+        </button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+      </form>
+    </div>
   );
 }
 
