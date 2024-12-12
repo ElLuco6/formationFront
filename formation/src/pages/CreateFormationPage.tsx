@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 const CreateFormationPage: React.FC = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
-    const [type, setType] = useState('');
-    const [duration, setDuration] = useState('');
+    const [type, setType] = useState('Technique');
+    const [durationValue, setDurationValue] = useState<number | ''>('');
+    const [durationUnit, setDurationUnit] = useState('heures');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState<number | ''>('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,6 +17,7 @@ const CreateFormationPage: React.FC = () => {
         setIsSubmitting(true);
         setError(null);
 
+        const duration = `${durationValue} ${durationUnit}`;
         const formationData = { title, type, duration, description, price };
 
         try {
@@ -56,25 +58,42 @@ const CreateFormationPage: React.FC = () => {
                 </div>
                 <div>
                     <label htmlFor="type">Type de Formation</label>
-                    <input
-                        type="text"
+                    <select
                         id="type"
                         value={type}
                         onChange={(e) => setType(e.target.value)}
-                        placeholder="Ex: Technique, Soft Skills, etc."
                         required
-                    />
+                    >
+                        <option value="Technique">Technique</option>
+                        <option value="Soft Skills">Soft Skills</option>
+                        <option value="Management">Management</option>
+                        <option value="Autre">Autre</option>
+                    </select>
                 </div>
                 <div>
                     <label htmlFor="duration">Durée</label>
-                    <input
-                        type="text"
-                        id="duration"
-                        value={duration}
-                        onChange={(e) => setDuration(e.target.value)}
-                        placeholder="Ex: 10 heures, 3 jours, etc."
-                        required
-                    />
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <input
+                            type="number"
+                            id="durationValue"
+                            value={durationValue}
+                            onChange={(e) => setDurationValue(Number(e.target.value) || '')}
+                            placeholder="Entrez un chiffre"
+                            required
+                        />
+                        <select
+                            id="durationUnit"
+                            value={durationUnit}
+                            onChange={(e) => setDurationUnit(e.target.value)}
+                            required
+                        >
+                            <option value="minutes">Minutes</option>
+                            <option value="heures">Heures</option>
+                            <option value="jours">Jours</option>
+                            <option value="semaines">Semaines</option>
+                            <option value="années">Années</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
                     <label htmlFor="price">Prix</label>
