@@ -14,8 +14,12 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, description, price, duration, id,fetchData }) => {
     const navigate = useNavigate();
+    const userLocalString = localStorage.getItem('user');
+    let userLocal : any = null;
 
-
+    if (userLocalString) {
+        userLocal = JSON.parse(userLocalString);
+    }
     const handleDeleteFormation = async () => {
         try {
             const response = await fetch(`http://10.31.34.188:3001/formations/${id}`, {
@@ -49,10 +53,16 @@ const Card: React.FC<CardProps> = ({ title, description, price, duration, id,fet
 
             {/* Conteneur pour l'explosion */}
             <div id="particles-explosion" style={{ position: "relative", width: "100%", height: "200px" }}></div>
-
+            {userLocal?.isAdmin ? (
             <button onClick={() => navigate("/createclassespage/" + id)}>Créer une Session</button>
-            <button onClick={() => navigate("/inscription/" + id)}>S'inscrire</button>
-            <button onClick={handleDeleteFormation}>Supprimer</button>
+            ) : null}
+            {!userLocal?.isAdmin ? (
+            <button onClick={() => navigate( userLocal ? "/inscription/" + id : "/login")}>S'inscrire</button>
+            ) : null}
+            {userLocal?.isAdmin ? (
+
+                <button onClick={handleDeleteFormation}>Supprimer</button>
+            ) : null}
         </div>
     );
 };

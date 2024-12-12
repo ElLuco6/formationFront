@@ -40,9 +40,21 @@ const LoginPage: React.FC = () => {
             setIsSubmitting(false);
         }
     };
+    const userLocalString = localStorage.getItem('user');
+    let userLocal = null;
 
+    if (userLocalString) {
+        userLocal = JSON.parse(userLocalString);
+    }
+    const Disconnect = () => {
+        localStorage.removeItem('user');
+        navigate('/');
+    }
     return (
-        <div className="container">
+        <>
+        {!userLocal ? (
+            <>
+            <div className="container">
             <h1 className="title">Login</h1>
             <form onSubmit={handleSubmit} className="form">
                 <div className="inputGroup">
@@ -72,8 +84,19 @@ const LoginPage: React.FC = () => {
                     {isSubmitting ? 'Logging in...' : 'Login'}
                 </button>
             </form>
+
         </div>
+        </>
+            ) : (
+            <div className="container" style={{gap: "30px"}}>
+            <button type="submit"  className="button" onClick={()=> Disconnect() }>Voulez vous vraiment vous deconnecter ?</button>
+
+            <button type="submit"  className="button" onClick={() => navigate('/')}>Retour à la page d'accueil</button>
+            </div>
+            )}
+        </>
     );
-};
+}
+
 
 export default LoginPage;
