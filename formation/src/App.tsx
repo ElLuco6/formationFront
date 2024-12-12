@@ -32,8 +32,12 @@ const App: React.FC = () => {
             {/* Home Content */}
             <Routes>
                 <Route path="/" element={<ListFormationsPage />} />
+                {userLocal?.isAdmin ? (
+                    <>
                 <Route path="/createformationpage" element={<CreateFormationPage />} />
                 <Route path="/createclassespage/:formationId" element={<CreateClassesPage />} />
+                </>
+                ) : null}
                 <Route path="/inscription/:formationId" element={<InscriptionPage />} />
                 <Route path="/login" element={<LoginPage/>} />
                 <Route path="/register" element={<RegisterPage/>} />
