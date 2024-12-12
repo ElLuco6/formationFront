@@ -81,13 +81,12 @@ const ListClassesPage: React.FC = () => {
                 return (
                 <div className="card no-image">
                     <div className="card-content">
-                    <h3 className="card-title">{session.type}</h3>
+                    {formation &&
+                        <h3 className="card-title">{formation.title}</h3>
+                    }
                     <p className="card-description">Nombre d'élèves : {session.nbEleves}</p>
                     
-                    {formation &&
-                        <p className="card-description">Formation : {formation.title}</p>
-                    }
-                    
+                    <p className="card-description">{session.type}</p>
                     <div>
                         <p>Liste des participants :</p>
                         {session.eleves.length > 0 ? (
