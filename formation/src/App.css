@@ -107,3 +107,13 @@ a {
   background-color: #003366;
   transform: scale(1.05);
 }
+
+/* ===== sessions ========== */
+#sessionList{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 1rem;
+  padding: 1rem;
+
+}
