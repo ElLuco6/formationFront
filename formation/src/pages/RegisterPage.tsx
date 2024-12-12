@@ -98,6 +98,9 @@ const RegisterPage: React.FC = () => {
                 <button type="submit" disabled={isSubmitting} className="button">
                     {isSubmitting ? 'Registering...' : 'Register'}
                 </button>
+                <button type="button" onClick={() => navigate('/login')} className="button login-button">
+                    Se connecter
+                </button>
             </form>
             {showSnackbar && <div className="snackbar">Registration successful!</div>}
 

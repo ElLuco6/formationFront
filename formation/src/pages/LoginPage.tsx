@@ -83,6 +83,9 @@ const LoginPage: React.FC = () => {
                 <button type="submit" disabled={isSubmitting} className="button">
                     {isSubmitting ? 'Logging in...' : 'Login'}
                 </button>
+                <button type="button" onClick={() => navigate('/register')} className="button register-button">
+                    Créer un compte
+                </button>
             </form>
 
         </div>
