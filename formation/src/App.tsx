@@ -5,6 +5,8 @@ import CreateFormationPage from './pages/CreateFormationPage';
 import CreateClassesPage from './pages/CreateClassesPage';
 import ListFormationsPage from './pages/ListFormationsPage';
 import InscriptionPage from './pages/InscriptionPage';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
 import ListClassesPage from './pages/ListClassesPage';
 
 const App: React.FC = () => {
@@ -27,6 +29,8 @@ const App: React.FC = () => {
                 <Route path="/createformationpage" element={<CreateFormationPage />} />
                 <Route path="/createclassespage/:formationId" element={<CreateClassesPage />} />
                 <Route path="/inscription/:formationId" element={<InscriptionPage />} />
+                <Route path="/login" element={<LoginPage/>} />
+                <Route path="/register" element={<RegisterPage/>} />
                 <Route path="/classes" element={<ListClassesPage />} />
             </Routes>
         </div>

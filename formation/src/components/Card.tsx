@@ -9,7 +9,7 @@ interface CardProps {
     price: number;
     duration: number; // En heures
     id: number;
-    fetchData: () => void;
+    fetchData?: () => void; // La propriété est maintenant optionnelle
 }
 
 const Card: React.FC<CardProps> = ({ title, description, price, duration, id,fetchData }) => {
@@ -18,7 +18,7 @@ const Card: React.FC<CardProps> = ({ title, description, price, duration, id,fet
 
     const handleDeleteFormation = async () => {
         try {
-            const response = await fetch("http://10.31.34.188:3001/formations/id", {
+            const response = await fetch(`http://10.31.34.188:3001/formations/${id}`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id }),
@@ -27,14 +27,12 @@ const Card: React.FC<CardProps> = ({ title, description, price, duration, id,fet
             if (!response.ok) {
                 throw new Error("Une erreur est survenue lors de la suppression de la formation.");
             }
-
-            // Déclencher l'explosion après la suppression
         } catch (error: any) {
             console.error(error.message);
-
-        }
-        finally {
-            fetchData();
+        } finally {
+            if (fetchData) {
+                fetchData(); // Appeler fetchData uniquement si elle est définie
+            }
         }
     };
 

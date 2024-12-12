@@ -1,18 +1,15 @@
 .formationsList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Minimum 300px pour chaque colonne */
   gap: 20px;
   padding: 20px;
-  animation: fadeIn 0.5s ease-in;
+  justify-items: center; /* Centre les cartes dans leurs colonnes */
 }
 
-.formationsList > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  animation: scaleUp 0.3s ease;
+@media (max-width: 768px) {
+  .formationsList {
+    grid-template-columns: 1fr; /* Une colonne pour les écrans plus petits */
+  }
 }
 
 @keyframes fadeIn {
@@ -24,11 +21,30 @@
   }
 }
 
-@keyframes scaleUp {
-  from {
-    transform: scale(0.9);
-  }
-  to {
-    transform: scale(1);
-  }
+.searchbar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
+
+.searchbar-container input {
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-results {
+  text-align: center; /* Centre horizontalement */
+  font-size: 1rem; /* Taille du texte */
+  color: #555; /* Couleur douce */
+  margin-top: 20px; /* Espace au-dessus */
+  display: flex; /* Utilisation de flexbox */
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+  height: 200px; /* Assurez une hauteur suffisante pour le centrer visuellement */
+}
+
