@@ -27,7 +27,7 @@ const App: React.FC = () => {
           </button>
         ) : null}
         <button onClick={() => navigate(!userLocal ? "/login" : "/disconnect")}>
-          {!userLocal ? "Login" : "Disconnect"}
+          {!userLocal ? "Connexion" : "Se déconnecter"}
         </button>
 
         {/* <button onClick={() => navigate('/createclassespage')}>Créer une Classe</button> */}
