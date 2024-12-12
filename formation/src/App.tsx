@@ -5,6 +5,7 @@ import CreateFormationPage from './pages/CreateFormationPage';
 import CreateClassesPage from './pages/CreateClassesPage';
 import ListFormationsPage from './pages/ListFormationsPage';
 import InscriptionPage from './pages/InscriptionPage';
+import ListClassesPage from './pages/ListClassesPage';
 
 const App: React.FC = () => {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ const App: React.FC = () => {
             {/* Navbar */}
             <div className="navbar">
                 <h1 onClick={() => navigate('/')}>Plateforme de Formation</h1>
+                <button onClick={() => navigate('/classes')}>Liste des classes</button>
                 <button onClick={() => navigate('/createformationpage')}>Créer une Formation</button>
                 {/* <button onClick={() => navigate('/createclassespage')}>Créer une Classe</button> */}
             </div>
@@ -25,6 +27,7 @@ const App: React.FC = () => {
                 <Route path="/createformationpage" element={<CreateFormationPage />} />
                 <Route path="/createclassespage/:formationId" element={<CreateClassesPage />} />
                 <Route path="/inscription/:formationId" element={<InscriptionPage />} />
+                <Route path="/classes" element={<ListClassesPage />} />
             </Routes>
         </div>
     );

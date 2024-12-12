@@ -37,7 +37,7 @@ function CreateClassesPage() {
         };
 
         try {
-            const response = await fetch('http://localhost:3001/sessions', {
+            const response = await fetch('http://10.31.34.188:3001/sessions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

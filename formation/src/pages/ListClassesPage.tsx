@@ -2,21 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 
-const API_URL = "http://10.31.34.188:3001/formations"; // Remplacez par l'URL de votre API
+const API_URL = "http://10.31.34.188:3001/sessions"; // Remplacez par l'URL de votre API
 
-interface DataItem {
+interface DataSession {
   id: number;
-  title: string;
-  description: string;
-  price: number;
-  duration: number; // En heures
+  type: string;
+  date: Date;
+  formationId: number;
+  nbEleves: number; // En heures
 }
 
-const ListFormationsPage: React.FC = () => {
+const ListClassesPage: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const [data, setData] = useState<DataItem[]>([]);
+    const [data, setData] = useState<DataSession[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);  
     
@@ -43,23 +43,21 @@ const ListFormationsPage: React.FC = () => {
 
     return (
         <div className="container">
-          <div className="formationsList">
-            <h1>Liste des formations</h1>
-            <div>
-              {data.map((formation) => (
-                <Card
-                  key={formation.id}
-                  title={formation.title}
-                  description={formation.description}
-                  price={formation.price}
-                  duration={formation.duration}
-                  id={formation.id}
-                />
-              ))}
+          <div className="sessionsList">
+            <h1>Liste des sessions</h1>
+            <div id="sessionList">
+              {data.map((item) => (
+                <div className="card no-image">
+                    <div className="card-content">
+                    <h3 className="card-title">{item.type}</h3>
+                    <p className="card-description">Nombre d'élèves : {item.nbEleves}</p>
+                    </div>
+                </div>
+                ))}
             </div>
           </div>
         </div>
     );
 };
 
-export default ListFormationsPage;
+export default ListClassesPage;
