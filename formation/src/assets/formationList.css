@@ -1,29 +1,23 @@
 .formationsList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Minimum 300px pour chaque colonne */
-  gap: 20px;
-  padding: 20px;
+  display: flex;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* S'adapte automatiquement à la taille de l'écran */
+  gap: 20px; /* Espace entre les cartes */
+  padding: 20px; /* Espacement avec les bords */
   justify-items: center; /* Centre les cartes dans leurs colonnes */
+  align-items: start; /* Assure un alignement vertical correct */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .formationsList {
-    grid-template-columns: 1fr; /* Une colonne pour les écrans plus petits */
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
+    grid-template-columns: 1fr; /* Une seule colonne pour les petits écrans */
   }
 }
 
 .searchbar-container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 60px; /* Donne une hauteur minimale */
   margin-bottom: 20px;
 }
 
@@ -47,4 +41,5 @@
   align-items: center; /* Centre verticalement */
   height: 200px; /* Assurez une hauteur suffisante pour le centrer visuellement */
 }
+
 
