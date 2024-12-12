@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function CreateClassesPage() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         type: '',
         date: Date.now(),
@@ -53,6 +54,7 @@ function CreateClassesPage() {
             const result = await response.json();
             setSuccessMessage('Session créée avec succès!');
             console.log('Session créée :', result);
+            navigate('/classes')
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -98,6 +100,10 @@ function CreateClassesPage() {
                     required
                 />
             </div>
+            {/* <div>
+                <label htmlFor="eleves">Élèves:</label>
+                <input type="text" />
+            </div> */}
             <button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? 'Envoi en cours...' : 'Créer la Session'}
             </button>

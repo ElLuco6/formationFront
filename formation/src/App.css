@@ -108,5 +108,11 @@ a {
   justify-content: space-evenly;
   gap: 1rem;
   padding: 1rem;
-
+}
+.usersSessionList{
+  padding: 0;
+}
+.usersSessionList li{
+  list-style: none;
+  width: 100%;
 }
